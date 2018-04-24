@@ -52,9 +52,7 @@ class Index extends Component {
     addUser() {
         let url = 'https://noodledistress.herokuapp.com/';
         let endPoint = 'user/';
-
-        console.log('login', this.newLoginInput, '\nfirst_name', this.newFirstNameInput);
-        axios.post(url+endPoint, {login: this.newLoginInput.value, first_name: this.newFirstNameInput.value, excuse: ''}).then(res => {
+        axios.post(url+endPoint, JSON.stringify({login: this.newLoginInput.value, first_name: this.newFirstNameInput.value, excuse: ''})).then(res => {
             if (null !== res.data) {
                 this.props.success(res.data)
             }
@@ -78,22 +76,18 @@ class Index extends Component {
             return(
                 <Fragment>
                     {this.renderFlashMessage()}
-                    <Fragment>
-                        <Input type="text" inputRef={(login) => { this.loginInput = login}}/>
-                        <Button variant="raised" onClick={this.connect}>Validate</Button>
-                        <Button variant="raised" onClick={this.suscribe}>Suscribe</Button>
-                    </Fragment>
+                    <Input type="text" inputRef={(login) => { this.loginInput = login}}/>
+                    <Button variant="raised" onClick={this.connect}>Validate</Button>
+                    <Button variant="raised" onClick={this.suscribe}>Suscribe</Button>
                 </Fragment>
             )
         }
         return(
             <Fragment>
                 {this.renderFlashMessage()}
-                <Fragment>
-                    <input type="text" placeholder="Pseudo" ref={(newLogin) => { console.log(newLogin); this.newLoginInput = newLogin}}/>
-                    <input type="text" placeholder="First name" ref={(newFirstName) => { this.newFirstNameInput = newFirstName}}/>
-                    <Button variant="raised" onClick={this.addUser}>Validate</Button>
-                </Fragment>
+                <input type="text" placeholder="Pseudo" ref={(newLogin) => {this.newLoginInput = newLogin}}/>
+                <input type="text" placeholder="First name" ref={(newFirstName) => { this.newFirstNameInput = newFirstName}}/>
+                <Button variant="raised" onClick={this.addUser}>Validate</Button>
             </Fragment>
         )
     }

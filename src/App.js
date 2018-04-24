@@ -3,12 +3,12 @@ import './App.css';
 
 // Imports Material-UI
 import { MuiThemeProvider } from 'material-ui/styles';
-import Theme from './themes/Main/index'
+import Theme from './themes/Main/index';
 
 // Import des components
-import Login from './components/Login'
-import Layout from './components/Layout'
-import Account from './components/Account'
+import Login from './components/Login';
+import Layout from './components/Layout';
+import Account from './components/Account';
 
 class App extends Component {
     constructor(props) {
@@ -17,9 +17,10 @@ class App extends Component {
         this.logout = this.logout.bind(this);
         this.getContent = this.getContent.bind(this);
         this.state = {
+            // user: null,
             user: {
                 "id": 2,
-                "login": "florianh",
+                "login": "flo",
                 "first_name": "florian",
                 "excuse": "Trop de bla bla",
                 "longitude": 0,
@@ -66,7 +67,7 @@ class App extends Component {
                     {component}
                 </Layout>
             </MuiThemeProvider>
-        )
+        );
     }
 
 }
