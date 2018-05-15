@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
+import { connect } from 'react-redux';
 
 // Imports Material-UI
 import { MuiThemeProvider } from 'material-ui/styles';
@@ -9,45 +10,41 @@ import Theme from './themes/Main/index';
 import Login from './components/Login';
 import Layout from './components/Layout';
 import Account from './components/Account';
+import Home from './components/Layout/home';
+import { logoutProcess } from "./_common/src/processes/Users/index";
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.successLogin = this.successLogin.bind(this);
-        this.logout = this.logout.bind(this);
         this.getContent = this.getContent.bind(this);
+        this.logout = this.logout.bind(this);
         this.state = {
-            // user: null,
-            user: {
-                "id": 2,
-                "login": "flo",
-                "first_name": "florian",
-                "excuse": "Trop de bla bla",
-                "longitude": 0,
-                "latitude": 0,
-                "distance": 200
-            },
             theme: Theme,
-            activeContent: null
+            activeContent: 'home'
         }
     }
 
-    successLogin(user) {
-        this.setState({user: user})
-    }
-
-    logout() {
-        this.setState({user: null})
-    }
-
+    /**
+     * Method sent to get content.
+     *
+     * @param content
+     */
     getContent(content) {
         console.log(this.state.activeContent);
-        this.setState({activeContent: content})
+        this.setState({ activeContent: content })
+    }
+
+    /**
+     * User logout
+     */
+    logout() {
+        logoutProcess(this.props.dispatch)
     }
 
     render() {
         console.log('render ok');
-        const { user, activeContent, theme } = this.state;
+        const { activeContent, theme } = this.state;
+        const { user } = this.props.user;
         const { getContent, logout, successLogin } = this;
         let component = null;
 
@@ -56,6 +53,9 @@ class App extends Component {
         } else switch (activeContent) {
             case 'account':
                 component = (<Account user={user} />);
+                break;
+            case 'home':
+                component = (<Home user={user} />);
                 break;
             default:
                 break;
@@ -72,4 +72,8 @@ class App extends Component {
 
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return { user:state.user }
+};
+
+export default connect(mapStateToProps)(App);

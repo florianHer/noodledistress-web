@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from 'react'
 import Button from 'material-ui/Button'
 import Input from 'material-ui/Input'
-import axios from 'axios'
 import FlashMessage from '../FlashMessage'
+import { connect } from 'react-redux';
+import { loginProcess, createUserProcess } from '../../_common/src/processes/Users/index';
 
 class Index extends Component {
     constructor(props) {
@@ -33,30 +34,11 @@ class Index extends Component {
 
     connect() {
         console.log(this.loginInput);
-        let url = 'https://noodledistress.herokuapp.com/';
-        let endPoint = 'user/login/'+this.loginInput.value;
-
-        console.log(url+endPoint);
-        axios.get(url+endPoint).then(res => {
-            console.log(res.status);
-            if (200 === res.status) {
-                this.setState({error: null});
-                this.props.success(res.data)
-            } else throw new Error(this.getError(res))
-        }).catch(err => {
-            console.log(err);
-            this.setState({error: err})
-        })
+        loginProcess(this.props.dispatch, this.loginInput.value)
     }
 
     addUser() {
-        let url = 'https://noodledistress.herokuapp.com/';
-        let endPoint = 'user/';
-        axios.post(url+endPoint, JSON.stringify({login: this.newLoginInput.value, first_name: this.newFirstNameInput.value, excuse: ''})).then(res => {
-            if (null !== res.data) {
-                this.props.success(res.data)
-            }
-        })
+        createUserProcess(this.props.dispatch, {login: this.newLoginInput.value, first_name: this.newFirstNameInput.value, excuse: ''})
     }
 
     suscribe() {
@@ -93,4 +75,4 @@ class Index extends Component {
     }
 }
 
-export default Index;
+export default connect()(Index);
