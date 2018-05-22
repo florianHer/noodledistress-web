@@ -63,7 +63,10 @@ class SimpleAppBar extends Component {
                             </List>
                             <Divider />
                             <List component="nav">
-                                <ListItem button onClick={this.props.logout} className={'red-action'}>
+                                <ListItem button onClick={() => {
+                                    this.setState({menuOpen: false,});
+                                    this.props.logout()
+                                }} className={'red-action'}>
                                     <ListItemIcon>
                                         <Icon>exit_to_app</Icon>
                                     </ListItemIcon>

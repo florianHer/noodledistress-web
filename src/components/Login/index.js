@@ -3,7 +3,7 @@ import Button from 'material-ui/Button'
 import Input from 'material-ui/Input'
 import FlashMessage from '../FlashMessage'
 import { connect } from 'react-redux';
-import { loginProcess, createUserProcess } from '../../_common/src/processes/Users/index';
+import { loginProcess, createUserProcess, updateGeolocationProcess } from '../../_common/src/processes/Users/index';
 
 class Index extends Component {
     constructor(props) {
@@ -18,7 +18,9 @@ class Index extends Component {
         this.newFirstNameInput = null;
         this.state = {
             suscribe: false,
-            error: null
+            error: null,
+            lat: null,
+            lng: null
         }
     }
 

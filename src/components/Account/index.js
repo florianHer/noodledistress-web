@@ -8,7 +8,6 @@ class Account extends Component {
     constructor(props) {
         super(props);
         this.updateUser = this.updateUser.bind(this);
-        this.getLocation = this.getLocation.bind(this);
         this.firstNameInput = null;
         this.distanceInput = null;
         this.excuseInput = null;
@@ -29,11 +28,11 @@ class Account extends Component {
         return (
             <div>
                 <h1>{login}</h1>
-                <TextField InputLabelProps={labelProps} label="First name" placeholder={ first_name } margin="normal"
+                <TextField InputLabelProps={labelProps} label="First name" defaultValue={ first_name } margin="normal"
                            inputRef={(newFirstName) => {this.firstNameInput = newFirstName}}/>
-                <TextField InputLabelProps={labelProps} label="Distance" placeholder={ distance+'' } margin="normal"
+                <TextField InputLabelProps={labelProps} label="Distance" defaultValue={ distance+'' } margin="normal"
                            inputRef={(newDistance) => {this.distanceInput = newDistance}}/>
-                <TextField InputLabelProps={labelProps} label="Excuse" placeholder={ excuse } margin="normal"
+                <TextField InputLabelProps={labelProps} label="Excuse" defaultValue={ excuse } margin="normal"
                            inputRef={(newExcuse) => {this.excuseInput = newExcuse}}/>
                 <Button variant="raised" onClick={this.updateUser}>Validate</Button>
             </div>

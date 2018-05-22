@@ -11,7 +11,10 @@ import Login from './components/Login';
 import Layout from './components/Layout';
 import Account from './components/Account';
 import Home from './components/Layout/home';
-import { logoutProcess } from "./_common/src/processes/Users/index";
+import { logoutProcess, updateGeolocationProcess } from "./_common/src/processes/Users/index";
+import Geolocation from "./_common/src/services/webPositionService";
+
+const locationService = new Geolocation();
 
 class App extends Component {
     constructor(props) {
@@ -38,7 +41,9 @@ class App extends Component {
      * User logout
      */
     logout() {
-        logoutProcess(this.props.dispatch)
+        locationService.stop();
+        logoutProcess(this.props.dispatch);
+        this.setState({activeContent: 'home'})
     }
 
     render() {
@@ -46,20 +51,26 @@ class App extends Component {
         const { activeContent, theme } = this.state;
         const { user } = this.props.user;
         const { getContent, logout, successLogin } = this;
+        const { position } = this.props;
         let component = null;
 
         if (null === user) {
             component = (<Login success={successLogin}/>)
-        } else switch (activeContent) {
+        } else {
+            locationService.watch((lat, lng)=>{
+                console.log('nouvelle position');
+                updateGeolocationProcess(this.props.dispatch, user, {lat, lng})
+            });
+            switch (activeContent) {
             case 'account':
                 component = (<Account user={user} />);
                 break;
             case 'home':
-                component = (<Home user={user} />);
+                component = (<Home user={user} position={position} />);
                 break;
             default:
                 break;
-        }
+        }}
 
         return (
             <MuiThemeProvider theme={theme}>
@@ -73,7 +84,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { user:state.user }
+    return { user:state.user, position:state.position }
 };
 
 export default connect(mapStateToProps)(App);
